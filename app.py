@@ -1,51 +1,32 @@
 # coding=utf8
 from flask import Flask, request, abort
 
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
-)
-
 app = Flask(__name__)
 
-# Channel Access Token
-line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
-# Channel Secret
-handler = WebhookHandler('YOUR_CHANNEL_SECRET')
 
-# 監聽所有來自 /callback 的 Post Request
-@app.route("/callback", methods=['POST'])
-def callback():
-    # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
-
-    # get request body as text
-    body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
-
-    # handle webhook body
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        abort(400)
-
-    return 'OK'
+@app.route("/webhook", methods=['GET'])
+def webhook():
+    VERIFY_TOKEN = "BBQHungAALL156___54ds5a6dsa"
+    print(request)
+    mode = request.args.get('hub.mode')
+    sendToken = request.args.get('hub.verify_token')
+    challenge = request.args.get('hub.challenge')
+    if mode == "subscribe" and sendToken == VERIFY_TOKEN:
+        return challenge
+    else:
+        return "error"
+    
 
 @app.route("/", methods=['GET'])
 def index():
     return "hello word"
 
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(
-        event.reply_token,
-        message)
+# @handler.add(MessageEvent, message=TextMessage)
+# def handle_message(event):
+#     message = TextSendMessage(text=event.message.text)
+#     line_bot_api.reply_message(
+#         event.reply_token,
+#         message)
 
 import os
 if __name__ == "__main__":
