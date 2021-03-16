@@ -1,6 +1,7 @@
 # coding=utf8
 from flask import Flask, request, abort
 import json
+import requests
 app = Flask(__name__)
 
 
