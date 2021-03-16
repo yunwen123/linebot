@@ -26,9 +26,10 @@ def webhook():
                     if "message" in message:
                         text = message['message']['text']
                         result = send_fb_message(sender, text)
-                return "Good2"
+                print("Good2")
         except Exception as e:
-            return str(e)
+            print(str(e))
+        return "Success"
     
 def send_fb_message(to, message):
     post_message_url = 'https://graph.facebook.com/v10.0/me/messages?access_token={token}'.format(token="EAAj3dtSZC2fABAP8pIWtsKzLMD02qZAFzGRh8j4v5cTjkWydyRhIolFSAFD32B4fimUk4DhSu2i2nGkJM3lepOvHmb9GJFmv5puT2rUZAbsepJyqvZBdS6HFWXyKT4qHCXQflXshFYFWbkXkRWmQZCMJ66yW9p3Njoxj156LJewzC0uWlA5cNUAwuXZCcoY4gZD")
