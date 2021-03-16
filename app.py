@@ -18,23 +18,20 @@ def webhook():
             return "error"
     else:
         try:
-            f = open("/var/www/slfhtml/chatbot/log.txt", "a")
-            f.write(request.data.decode('utf8')+"\n")
             message_entries = json.loads(request.data.decode('utf8'))['entry']
             for entry in message_entries:
                 messagings = entry['messaging']
                 for message in messagings:
                     sender = message['sender']['id']
-                    if message.get('message'):
+                    if "message" in message:
                         text = message['message']['text']
                         result = send_fb_message(sender, text)
-                        f.write(result+"\n")
                 return "Good2"
         except Exception as e:
             return str(e)
     
 def send_fb_message(to, message):
-    post_message_url = 'https://graph.facebook.com/v5.0/me/messages?access_token={token}'.format(token="EAAj3dtSZC2fABAGuoLMYWAscrztOQ9vyGuA8ZBNhaOSS04ESZCYsZA6NZChDWkHj6V4Ey1LsJxj46gM1WkoV3ZC9XZCmAISDyjJhV3vbJtTgrbKlofTnz0rHZCvmdLyw6s2HJ2KTu0Y9aKNUVZCz6zg2NrcCxUm1CIHS3E55EOTNSBj5nZBOh0Sh9ZBTSagh8KJWdMZD")
+    post_message_url = 'https://graph.facebook.com/v10.0/me/messages?access_token={token}'.format(token="EAAj3dtSZC2fABAP8pIWtsKzLMD02qZAFzGRh8j4v5cTjkWydyRhIolFSAFD32B4fimUk4DhSu2i2nGkJM3lepOvHmb9GJFmv5puT2rUZAbsepJyqvZBdS6HFWXyKT4qHCXQflXshFYFWbkXkRWmQZCMJ66yW9p3Njoxj156LJewzC0uWlA5cNUAwuXZCcoY4gZD")
     response_message = json.dumps({"messaging_type":"RESPONSE",
                                     "recipient":{"id": to}, 
                                    "message":{"text":message}})
