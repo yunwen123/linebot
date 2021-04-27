@@ -44,7 +44,7 @@ def send_fb_message(to, message):
 
 @app.route("/", methods=['GET'])
 def index():
-    return "hello word"
+    return "已經成功開啟APP!!!!"
 
 # @handler.add(MessageEvent, message=TextMessage)
 # def handle_message(event):
