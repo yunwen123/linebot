@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route("/webhook", methods=['GET','POST'])
 def webhook():
     if request.method == "GET":
-        VERIFY_TOKEN = "BBQHungAALL156___54ds5a6dsa"
+        VERIFY_TOKEN = "輸入自己的驗證Token"
         print(request)
         mode = request.args.get('hub.mode')
         sendToken = request.args.get('hub.verify_token')
